@@ -11,7 +11,7 @@ class GetBusScheduleService(
     val storage: Storage
 ) {
     fun getBusSchedule() = BusSchedule(
-        busEntityList = repository.findAll().toList(),
+        busList = repository.findAll().toList(),
         revision = storage.getBusScheduleRevision()
     )
 }
