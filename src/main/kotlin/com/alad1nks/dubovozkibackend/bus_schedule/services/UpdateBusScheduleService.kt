@@ -6,7 +6,6 @@ import com.alad1nks.dubovozkibackend.bus_schedule.entities.BusRequestBody
 import com.alad1nks.dubovozkibackend.storage.Storage
 
 import org.springframework.stereotype.Service
-import java.sql.Time
 
 @Service
 class UpdateBusScheduleService(
@@ -29,8 +28,14 @@ class UpdateBusScheduleService(
     private fun BusRequestBody.toEntity(): BusEntity = BusEntity(
         id = null,
         dayOfWeek = dayOfWeek,
-        dayTime = Time.valueOf(dayTime),
+        dayTime = dayTime.toMilliseconds(),
+        dayTimeString = dayTime,
         direction = direction,
         station = station
     )
+
+    private fun String.toMilliseconds(): Long {
+        val vars = this.split(':').map { it.toLong() }
+        return vars[0] * 3600000 + vars[1] * 60000
+    }
 }
