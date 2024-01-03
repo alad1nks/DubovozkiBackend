@@ -15,6 +15,7 @@ class UpdateBusScheduleService(
 ) {
     fun updateBusSchedule(busRequestBodyList: List<BusRequestBody>): String {
         storage.updateBusScheduleRevision()
+        repository.deleteAll()
         repository.saveAll(busRequestBodyList.toEntity())
         return "OK"
     }
