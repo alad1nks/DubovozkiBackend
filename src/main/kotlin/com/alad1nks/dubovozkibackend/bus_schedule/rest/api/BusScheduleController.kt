@@ -6,17 +6,19 @@ import com.alad1nks.dubovozkibackend.bus_schedule.services.UpdateBusScheduleServ
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
+@RequestMapping("/router/bus-schedule")
 class BusScheduleController(
     val getBusScheduleService: GetBusScheduleService,
     val updateBusScheduleService: UpdateBusScheduleService,
 ) {
-    @GetMapping("/router/bus-schedule")
+    @GetMapping
     fun getBusSchedule() = getBusScheduleService.getBusSchedule()
 
-    @PostMapping("/router/bus-schedule/update")
+    @PostMapping("/update")
     fun updateBusSchedule(
         @RequestBody busList: List<BusEntity>
     ) = updateBusScheduleService.updateBusSchedule(busList)
