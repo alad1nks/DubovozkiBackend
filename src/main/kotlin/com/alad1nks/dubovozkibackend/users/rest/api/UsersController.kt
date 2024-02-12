@@ -12,10 +12,10 @@ class UsersController(
     val createUserUseCase: CreateUserUseCase
 ) {
     @GetMapping("/list")
-    fun getUserList() = getUserListUseCase.getUserList()
+    fun getUserList() = getUserListUseCase()
 
     @PostMapping("/create")
     fun createUser(@RequestBody userEntity: UserEntity) {
-        createUserUseCase.createUser(userEntity)
+        createUserUseCase(userEntity)
     }
 }

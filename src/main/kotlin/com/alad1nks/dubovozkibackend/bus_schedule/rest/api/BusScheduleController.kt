@@ -16,10 +16,10 @@ class BusScheduleController(
     val updateBusScheduleService: UpdateBusScheduleService,
 ) {
     @GetMapping
-    fun getBusSchedule() = getBusScheduleService.getBusSchedule()
+    fun getBusSchedule() = getBusScheduleService()
 
     @PostMapping("/update")
     fun updateBusSchedule(
         @RequestBody busList: List<BusEntity>
-    ) = updateBusScheduleService.updateBusSchedule(busList)
+    ) = updateBusScheduleService(busList)
 }

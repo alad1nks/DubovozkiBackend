@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class EmailVerificationService(
+class EmailVerificationUseCase(
     val tokensRepository: RegistrationTokensRepository,
     val usersRepository: UsersRepository
 ) {
     @Autowired
     lateinit var emailService: EmailService
 
-    fun verify(email: String): EmailVerificationResponse {
+    operator fun invoke(email: String): EmailVerificationResponse {
         val validationStatus = email.validationStatus()
         return when {
             validationStatus != EmailValidationStatus.Valid -> validationStatus.response()

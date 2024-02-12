@@ -10,7 +10,7 @@ class GetBusScheduleService(
     val repository: BusScheduleRepository,
     val storage: Storage
 ) {
-    fun getBusSchedule() = BusSchedule(
+    operator fun invoke() = BusSchedule(
         busList = repository.findAll().toList(),
         revision = storage.getBusScheduleRevision()
     )

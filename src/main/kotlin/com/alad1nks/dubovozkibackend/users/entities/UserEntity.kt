@@ -8,7 +8,7 @@ data class UserEntity(
     @Id
     val id: Long? = null,
     val email: String,
-    val name: String,
+    val name: String = "",
     val password: String,
-    val enabled: Boolean
+    val enabled: Boolean = true
 )

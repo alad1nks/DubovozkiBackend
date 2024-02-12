@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service
 class GetUserListUseCase(
     val repository: UsersRepository
 ) {
-    fun getUserList() = repository.findAll().toList()
+    operator fun invoke() = repository.findAll().toList()
 }
