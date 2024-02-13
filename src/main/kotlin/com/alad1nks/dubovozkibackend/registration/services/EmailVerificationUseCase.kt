@@ -20,21 +20,28 @@ class EmailVerificationUseCase(
     operator fun invoke(email: String): EmailVerificationResponse {
         val validationStatus = email.validationStatus()
         return when {
-            validationStatus != EmailValidationStatus.Valid -> validationStatus.response()
-            tokensRepository.existsByEmail(email) -> EmailConfirmationStatus.OnConfirmation.response()
-            usersRepository.existsByEmail(email) -> EmailConfirmationStatus.Confirmed.response()
+            validationStatus != EmailValidationStatus.Valid -> validationStatus.response
+            tokensRepository.existsByEmail(email) -> EmailConfirmationStatus.OnConfirmation.response
+            usersRepository.existsByEmail(email) -> {
+                sendActivationCode(email)
+                EmailConfirmationStatus.Confirmed.response
+            }
             else -> {
-                val token = TokenGenerator.verificationToken()
-                emailService.sendEmail(email, "Код активации", token)
-                tokensRepository.save(
-                    RegistrationTokenEntity(
-                        email = email,
-                        token = token,
-                        expiryDate = Calendar.getInstance().timeInMillis + 300000
-                    )
-                )
-                EmailConfirmationStatus.NotConfirmed.response()
+                sendActivationCode(email)
+                EmailConfirmationStatus.NotConfirmed.response
             }
         }
+    }
+
+    private fun sendActivationCode(email: String) {
+        val token = TokenGenerator.verificationToken()
+        emailService.sendEmail(email, "Код активации", token)
+        tokensRepository.save(
+            RegistrationTokenEntity(
+                email = email,
+                token = token,
+                expiryDate = Calendar.getInstance().timeInMillis + 300000
+            )
+        )
     }
 }
