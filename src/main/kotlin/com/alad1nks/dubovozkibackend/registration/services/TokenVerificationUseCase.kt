@@ -15,7 +15,10 @@ class TokenVerificationUseCase(
     operator fun invoke(tokenBody: RegistrationTokenRequestBody): String {
         val email = tokenBody.email
         val token = tokenBody.token
-        return when {
+        if (usersRepository.existsByEmail(email)) {
+            return "EXISTS"
+        }
+        when {
             tokensRepository.existsByEmailAndToken(email, token) -> {
                 usersRepository.save(
                     UserEntity(
@@ -23,9 +26,9 @@ class TokenVerificationUseCase(
                         password = generateHash(token)
                     )
                 )
-                "YES"
+                return "YES"
             }
-            else -> "NO"
+            else -> return "NO"
         }
     }
 }
