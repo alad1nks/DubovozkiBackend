@@ -1,4 +1,4 @@
-package com.alad1nks.dubovozkibackend.bus_schedule.services
+package com.alad1nks.dubovozkibackend.bus_schedule.service
 
 import com.alad1nks.dubovozkibackend.bus_schedule.BusScheduleRepository
 import com.alad1nks.dubovozkibackend.bus_schedule.entities.BusSchedule

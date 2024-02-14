@@ -1,8 +1,8 @@
-package com.alad1nks.dubovozkibackend.registration.rest.api
+package com.alad1nks.dubovozkibackend.registration.controller
 
 import com.alad1nks.dubovozkibackend.registration.entities.RegistrationTokenRequestBody
-import com.alad1nks.dubovozkibackend.registration.services.EmailVerificationUseCase
-import com.alad1nks.dubovozkibackend.registration.services.TokenVerificationUseCase
+import com.alad1nks.dubovozkibackend.registration.service.EmailVerificationUseCase
+import com.alad1nks.dubovozkibackend.registration.service.TokenVerificationUseCase
 import org.springframework.web.bind.annotation.*
 
 @RestController
