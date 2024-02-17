@@ -1,4 +1,4 @@
-package com.alad1nks.dubovozkibackend.registration.services
+package com.alad1nks.dubovozkibackend.registration.service
 
 import com.alad1nks.dubovozkibackend.email.*
 import com.alad1nks.dubovozkibackend.email.HseEmailValidator.validationStatus

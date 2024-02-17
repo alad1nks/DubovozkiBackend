@@ -1,4 +1,4 @@
-package com.alad1nks.dubovozkibackend.registration.services
+package com.alad1nks.dubovozkibackend.registration.service
 
 import com.alad1nks.dubovozkibackend.registration.RegistrationTokensRepository
 import org.springframework.scheduling.annotation.Scheduled
