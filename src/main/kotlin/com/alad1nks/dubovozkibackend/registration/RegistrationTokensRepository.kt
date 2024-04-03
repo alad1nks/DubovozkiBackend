@@ -13,7 +13,7 @@ interface RegistrationTokensRepository : CrudRepository<RegistrationTokenEntity,
     fun existsByEmailAndToken(email: String, token: String): Boolean
 
     @Modifying
-    @Query("DELETE FROM REGISTRATION_TOKENS WHERE email = :expiryDate")
+    @Query("DELETE FROM REGISTRATION_TOKENS WHERE email = :email")
     fun deleteByEmail(email: String)
 
     @Modifying
