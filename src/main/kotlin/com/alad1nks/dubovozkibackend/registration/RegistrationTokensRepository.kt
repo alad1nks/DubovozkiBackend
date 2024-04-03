@@ -4,12 +4,10 @@ import com.alad1nks.dubovozkibackend.registration.entities.RegistrationTokenEnti
 import org.springframework.data.jdbc.repository.query.Modifying
 import org.springframework.data.jdbc.repository.query.Query
 import org.springframework.data.repository.CrudRepository
-import org.springframework.stereotype.Repository
 
-@Repository
 interface RegistrationTokensRepository : CrudRepository<RegistrationTokenEntity, Long> {
-
     fun existsByEmail(email: String): Boolean
+
     fun existsByEmailAndToken(email: String, token: String): Boolean
 
     @Modifying

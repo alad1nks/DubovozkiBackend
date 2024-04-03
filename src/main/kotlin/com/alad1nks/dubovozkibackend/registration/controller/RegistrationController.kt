@@ -13,13 +13,9 @@ class RegistrationController(
 ) {
     @GetMapping("/verify/email/{user-email}")
     @ResponseBody
-    fun verifyEmail(
-        @PathVariable("user-email") email: String
-    ) = emailVerificationUseCase(email)
+    fun verifyEmail(@PathVariable("user-email") email: String) = emailVerificationUseCase(email)
 
     @PostMapping("/verify/token")
     @ResponseBody
-    fun verifyToken(
-        @RequestBody tokenBody: RegistrationTokenRequestBody
-    ) = tokenVerificationUseCase(tokenBody)
+    fun verifyToken(@RequestBody tokenBody: RegistrationTokenRequestBody) = tokenVerificationUseCase(tokenBody)
 }

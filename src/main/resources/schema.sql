@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS bus_schedule (
 CREATE TABLE IF NOT EXISTS users (
     id                  IDENTITY        NOT NULL    PRIMARY KEY,
     email               VARCHAR(50)     NOT NULL,
-    name                VARCHAR(50)     NOT NULL,
+    name                VARCHAR(50),
+    telegram_id         VARCHAR(50),
     password            VARCHAR(100)    NOT NULL,
     enabled             BOOL            NOT NULL
 );

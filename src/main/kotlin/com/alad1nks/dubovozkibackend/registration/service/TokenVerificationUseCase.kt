@@ -13,20 +13,36 @@ class TokenVerificationUseCase(
     val usersRepository: UsersRepository
 ) {
     operator fun invoke(tokenBody: RegistrationTokenRequestBody): String {
-        val email = tokenBody.email
-        val token = tokenBody.token
-        when {
-            tokensRepository.existsByEmailAndToken(email, token) -> {
-                usersRepository.save(
-                    UserEntity(
-                        email = email,
-                        password = generateHash(token)
+        with(tokenBody) {
+            when {
+                !tokensRepository.existsByEmailAndToken(email, token) -> {
+                    return "NO"
+                }
+                usersRepository.existsByEmail(email) -> {
+                    usersRepository.save(
+                        UserEntity(
+                            id = usersRepository.selectIdByEmail(email),
+                            email = email,
+                            telegramId = telegramId,
+                            password = generateHash(token)
+                        )
                     )
-                )
-                tokensRepository.deleteByEmail(email)
-                return "YES"
+                    tokensRepository.deleteByEmail(email)
+                    return "YES"
+                }
+                !usersRepository.existsByEmail(email) -> {
+                    usersRepository.save(
+                        UserEntity(
+                            email = email,
+                            telegramId = telegramId,
+                            password = generateHash(token)
+                        )
+                    )
+                    tokensRepository.deleteByEmail(email)
+                    return "YES"
+                }
+                else -> return "NO"
             }
-            else -> return "NO"
         }
     }
 }
