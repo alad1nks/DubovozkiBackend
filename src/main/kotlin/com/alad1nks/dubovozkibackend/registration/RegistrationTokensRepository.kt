@@ -8,7 +8,11 @@ import org.springframework.data.repository.CrudRepository
 interface RegistrationTokensRepository : CrudRepository<RegistrationTokenEntity, Long> {
     fun existsByEmail(email: String): Boolean
 
-    fun existsByEmailAndToken(email: String, token: String): Boolean
+    fun findByEmail(email: String): RegistrationTokenEntity?
+
+    @Modifying
+    @Query("UPDATE REGISTRATION_TOKENS SET tries = tries - 1 WHERE id = :id")
+    fun updateTokenTries(id: Long)
 
     @Modifying
     @Query("DELETE FROM REGISTRATION_TOKENS WHERE email = :email")

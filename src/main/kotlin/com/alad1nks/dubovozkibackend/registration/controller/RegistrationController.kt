@@ -1,5 +1,7 @@
 package com.alad1nks.dubovozkibackend.registration.controller
 
+import com.alad1nks.dubovozkibackend.email.EmailVerificationResponse
+import com.alad1nks.dubovozkibackend.registration.entities.RegistrationEmailRequestBody
 import com.alad1nks.dubovozkibackend.registration.entities.RegistrationTokenRequestBody
 import com.alad1nks.dubovozkibackend.registration.service.EmailVerificationUseCase
 import com.alad1nks.dubovozkibackend.registration.service.TokenVerificationUseCase
@@ -11,11 +13,13 @@ class RegistrationController(
     val emailVerificationUseCase: EmailVerificationUseCase,
     val tokenVerificationUseCase: TokenVerificationUseCase
 ) {
-    @GetMapping("/verify/email/{user-email}")
+    @PostMapping("/verify/email")
     @ResponseBody
-    fun verifyEmail(@PathVariable("user-email") email: String) = emailVerificationUseCase(email)
+    fun verifyEmail(@RequestBody emailBody: RegistrationEmailRequestBody): EmailVerificationResponse =
+        emailVerificationUseCase(emailBody)
 
     @PostMapping("/verify/token")
     @ResponseBody
-    fun verifyToken(@RequestBody tokenBody: RegistrationTokenRequestBody) = tokenVerificationUseCase(tokenBody)
+    fun verifyToken(@RequestBody tokenBody: RegistrationTokenRequestBody): String =
+        tokenVerificationUseCase(tokenBody)
 }

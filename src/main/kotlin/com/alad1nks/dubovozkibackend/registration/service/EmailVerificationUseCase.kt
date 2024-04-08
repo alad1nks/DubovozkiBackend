@@ -3,11 +3,14 @@ package com.alad1nks.dubovozkibackend.registration.service
 import com.alad1nks.dubovozkibackend.email.*
 import com.alad1nks.dubovozkibackend.email.HseEmailValidator.validationStatus
 import com.alad1nks.dubovozkibackend.registration.RegistrationTokensRepository
+import com.alad1nks.dubovozkibackend.registration.entities.RegistrationEmailRequestBody
 import com.alad1nks.dubovozkibackend.registration.entities.RegistrationTokenEntity
 import com.alad1nks.dubovozkibackend.users.UsersRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
+
+private const val EXPIRATION_TIME_MS: Long = 5 * 60 * 1000
 
 @Service
 class EmailVerificationUseCase(
@@ -17,17 +20,17 @@ class EmailVerificationUseCase(
     @Autowired
     lateinit var emailService: EmailService
 
-    operator fun invoke(email: String): EmailVerificationResponse {
-        val validationStatus = email.validationStatus()
+    operator fun invoke(emailBody: RegistrationEmailRequestBody): EmailVerificationResponse {
+        val validationStatus = emailBody.email.validationStatus()
         return when {
             validationStatus != EmailValidationStatus.Valid -> validationStatus.response
-            tokensRepository.existsByEmail(email) -> EmailConfirmationStatus.OnConfirmation.response
-            usersRepository.existsByEmail(email) -> {
-                sendActivationCode(email)
+            tokensRepository.existsByEmail(emailBody.email) -> EmailConfirmationStatus.OnConfirmation.response
+            usersRepository.existsByEmail(emailBody.email) -> {
+                sendActivationCode(emailBody.email)
                 EmailConfirmationStatus.Confirmed.response
             }
             else -> {
-                sendActivationCode(email)
+                sendActivationCode(emailBody.email)
                 EmailConfirmationStatus.NotConfirmed.response
             }
         }
@@ -40,7 +43,7 @@ class EmailVerificationUseCase(
             RegistrationTokenEntity(
                 email = email,
                 token = token,
-                expiryDate = Calendar.getInstance().timeInMillis + 300000
+                expiryDate = Calendar.getInstance().timeInMillis + EXPIRATION_TIME_MS
             )
         )
     }
