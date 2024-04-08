@@ -9,5 +9,6 @@ data class RegistrationTokenEntity(
     val id: Long? = null,
     val email: String,
     val token: String,
-    val expiryDate: Long
+    val expiryDate: Long,
+    val tries: Int = 3
 )

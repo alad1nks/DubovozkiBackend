@@ -12,5 +12,4 @@ object TokenGenerator {
         }
         return sb.toString()
     }
-
 }
