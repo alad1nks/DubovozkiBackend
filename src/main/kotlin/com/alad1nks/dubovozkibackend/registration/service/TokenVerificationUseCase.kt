@@ -1,7 +1,9 @@
 package com.alad1nks.dubovozkibackend.registration.service
 
 import com.alad1nks.dubovozkibackend.registration.RegistrationTokensRepository
+import com.alad1nks.dubovozkibackend.registration.entities.RegistrationResponse
 import com.alad1nks.dubovozkibackend.registration.entities.RegistrationTokenRequestBody
+import com.alad1nks.dubovozkibackend.registration.entities.TokenVerificationResponse
 import com.alad1nks.dubovozkibackend.security.JwtTokenUtil.generateToken
 import com.alad1nks.dubovozkibackend.users.UsersRepository
 import com.alad1nks.dubovozkibackend.users.entities.UserEntity
@@ -13,27 +15,28 @@ class TokenVerificationUseCase(
     val tokensRepository: RegistrationTokensRepository,
     val usersRepository: UsersRepository
 ) {
-    operator fun invoke(request: RegistrationTokenRequestBody): String {
+    operator fun invoke(request: RegistrationTokenRequestBody): TokenVerificationResponse {
         with(request) {
             val userExists = usersRepository.existsByEmail(email)
-            val tokenBody = tokensRepository.findByEmail(email)
+            val tokenEntity = tokensRepository.findByEmail(email)
 
             when {
-                tokenBody == null -> {
-                    return "NO"
+                tokenEntity == null -> {
+                    return RegistrationResponse.EmailDoesNotExist.response()
                 }
 
-                tokenBody.tries <= 0 -> {
-                    return "NO"
+                tokenEntity.tries <= 0 -> {
+                    return RegistrationResponse.RetriesAreExhausted.response()
                 }
 
-                tokenBody.token != token -> {
-                    tokenBody.id?.let { tokensRepository.updateTokenTries(it) }
-                    return "NO"
+                tokenEntity.token != token -> {
+                    tokenEntity.id?.let { tokensRepository.updateTokenTries(it) }
+                    return RegistrationResponse.IncorrectActivationCode.response()
                 }
 
                 userExists -> {
-                    return generateToken(email, UserRole.USER.name)
+                    val jwt = generateToken(email, UserRole.USER.name)
+                    return RegistrationResponse.Success.response(jwt)
                 }
 
                 else -> {
@@ -44,7 +47,8 @@ class TokenVerificationUseCase(
                         )
                     )
                     tokensRepository.deleteByEmail(email)
-                    return generateToken(email, UserRole.USER.name)
+                    val jwt = generateToken(email, UserRole.USER.name)
+                    return RegistrationResponse.Success.response(jwt)
                 }
             }
         }
