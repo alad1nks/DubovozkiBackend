@@ -5,7 +5,6 @@ import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Service
 
-
 @Service
 class EmailServiceImpl : EmailService {
     @Autowired
@@ -13,6 +12,7 @@ class EmailServiceImpl : EmailService {
 
     override fun sendEmail(address: String, subject: String, message: String) {
         val simpleMailMessage = SimpleMailMessage()
+        simpleMailMessage.from = "Дубовозки"
         simpleMailMessage.setTo(address)
         simpleMailMessage.subject = subject
         simpleMailMessage.text = message
