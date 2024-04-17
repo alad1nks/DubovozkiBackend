@@ -1,7 +1,6 @@
 package com.alad1nks.dubovozkibackend.security
 
 import com.alad1nks.dubovozkibackend.users.entities.UserRole
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.Customizer
@@ -12,10 +11,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig {
-    @Autowired
-    private lateinit var jwtAuthenticationFilter: JwtAuthenticationFilter
-
+class SecurityConfig(
+    val jwtAuthenticationFilter: JwtAuthenticationFilter
+) {
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http

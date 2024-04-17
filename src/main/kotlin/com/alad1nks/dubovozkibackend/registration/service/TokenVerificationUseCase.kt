@@ -4,7 +4,7 @@ import com.alad1nks.dubovozkibackend.registration.RegistrationTokensRepository
 import com.alad1nks.dubovozkibackend.registration.entities.RegistrationResponse
 import com.alad1nks.dubovozkibackend.registration.entities.RegistrationTokenRequestBody
 import com.alad1nks.dubovozkibackend.registration.entities.TokenVerificationResponse
-import com.alad1nks.dubovozkibackend.security.JwtTokenUtil.generateToken
+import com.alad1nks.dubovozkibackend.security.JwtTokenUtil
 import com.alad1nks.dubovozkibackend.users.UsersRepository
 import com.alad1nks.dubovozkibackend.users.entities.UserEntity
 import com.alad1nks.dubovozkibackend.users.entities.UserRole
@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service
 @Service
 class TokenVerificationUseCase(
     val tokensRepository: RegistrationTokensRepository,
-    val usersRepository: UsersRepository
+    val usersRepository: UsersRepository,
+    val jwtUtil: JwtTokenUtil
 ) {
     operator fun invoke(request: RegistrationTokenRequestBody): TokenVerificationResponse {
         with(request) {
@@ -35,7 +36,7 @@ class TokenVerificationUseCase(
                 }
 
                 userExists -> {
-                    val jwt = generateToken(email, UserRole.USER.name)
+                    val jwt = jwtUtil.generateToken(email, UserRole.USER.name)
                     return RegistrationResponse.Success.response(jwt)
                 }
 
@@ -47,7 +48,7 @@ class TokenVerificationUseCase(
                         )
                     )
                     tokensRepository.deleteByEmail(email)
-                    val jwt = generateToken(email, UserRole.USER.name)
+                    val jwt = jwtUtil.generateToken(email, UserRole.USER.name)
                     return RegistrationResponse.Success.response(jwt)
                 }
             }

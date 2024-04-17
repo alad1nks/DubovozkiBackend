@@ -3,13 +3,22 @@ package com.alad1nks.dubovozkibackend.security
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.env.Environment
+import org.springframework.stereotype.Component
 import java.nio.charset.StandardCharsets
 import java.util.*
 import javax.crypto.SecretKey
 
-object JwtTokenUtil {
-    private const val SECRET_KEY = "SECRET_KEY"
-    private const val EXPIRATION_TIME_MS: Long = 60 * 60 * 24 * 30 * 1000L
+private const val EXPIRATION_TIME_MS: Long = 60 * 60 * 24 * 30 * 1000L
+
+@Component
+class JwtTokenUtil(
+    @Autowired private val env: Environment
+) {
+    val jwtSecret: String by lazy {
+        env.getRequiredProperty("jwt.secret")
+    }
 
     fun generateToken(email: String, role: String): String {
         val now = Date()
@@ -52,7 +61,7 @@ object JwtTokenUtil {
     }
 
     private fun getSigningKey(): SecretKey {
-        val keyBytes: ByteArray = SECRET_KEY.toByteArray(StandardCharsets.UTF_8)
+        val keyBytes: ByteArray = jwtSecret.toByteArray(StandardCharsets.UTF_8)
         return Keys.hmacShaKeyFor(keyBytes)
     }
 }
