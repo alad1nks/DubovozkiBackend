@@ -38,3 +38,5 @@ out/
 
 ### database
 data/
+
+src/main/resources/application-prod.properties

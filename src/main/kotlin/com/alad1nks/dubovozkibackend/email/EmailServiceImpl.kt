@@ -12,7 +12,6 @@ class EmailServiceImpl : EmailService {
 
     override fun sendEmail(address: String, subject: String, message: String) {
         val simpleMailMessage = SimpleMailMessage()
-        simpleMailMessage.from = "Дубовозки"
         simpleMailMessage.setTo(address)
         simpleMailMessage.subject = subject
         simpleMailMessage.text = message
