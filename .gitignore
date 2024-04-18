@@ -39,4 +39,7 @@ out/
 ### database
 data/
 
+certs/application-prod.crt
+certs/application-prod.key
+
 src/main/resources/application-prod.properties
