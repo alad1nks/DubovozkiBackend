@@ -10,7 +10,7 @@ class UpdateBusScheduleService(
     val repository: BusScheduleRepository,
     val storage: Storage
 ) {
-    operator fun invoke(busRequestBodyList: List<BusEntity>, email: String, password: String): String {
+    operator fun invoke(busRequestBodyList: List<BusEntity>): String {
         storage.updateBusScheduleRevision()
         repository.deleteAll()
         repository.saveAll(busRequestBodyList)
