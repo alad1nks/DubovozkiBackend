@@ -9,15 +9,13 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/router/bus-schedule")
 class BusScheduleController(
     val getBusScheduleService: GetBusScheduleService,
-    val updateBusScheduleService: UpdateBusScheduleService,
+    val updateBusScheduleService: UpdateBusScheduleService
 ) {
     @GetMapping
     fun getBusSchedule() = getBusScheduleService()
 
     @PostMapping("/update")
     fun updateBusSchedule(
-        @RequestBody busList: List<BusEntity>,
-        @CookieValue("email") email: String,
-        @CookieValue("password") password: String
-    ) = updateBusScheduleService(busList, email, password)
+        @RequestBody busList: List<BusEntity>
+    ) = updateBusScheduleService(busList)
 }
