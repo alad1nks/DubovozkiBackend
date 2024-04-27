@@ -1,17 +1,12 @@
 package com.alad1nks.dubovozkibackend.bus_schedule.service
 
 import com.alad1nks.dubovozkibackend.bus_schedule.BusScheduleRepository
-import com.alad1nks.dubovozkibackend.bus_schedule.entities.BusSchedule
-import com.alad1nks.dubovozkibackend.storage.Storage
+import com.alad1nks.dubovozkibackend.bus_schedule.entities.BusScheduleResponse
 import org.springframework.stereotype.Service
 
 @Service
 class GetBusScheduleService(
-    val repository: BusScheduleRepository,
-    val storage: Storage
+    val repository: BusScheduleRepository
 ) {
-    operator fun invoke() = BusSchedule(
-        busList = repository.findAll().toList(),
-        revision = storage.getBusScheduleRevision()
-    )
+    operator fun invoke() = BusScheduleResponse(repository.findAll().toList())
 }
