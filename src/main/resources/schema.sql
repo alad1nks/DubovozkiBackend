@@ -11,7 +11,6 @@ CREATE TABLE IF NOT EXISTS users (
     id                  IDENTITY        NOT NULL    PRIMARY KEY,
     email               VARCHAR(50)     NOT NULL,
     role                VARCHAR(50)     NOT NULL,
-    telegram_id         VARCHAR(50),
     enabled             BOOL            NOT NULL
 );
 
