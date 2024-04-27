@@ -24,11 +24,12 @@ class SecurityConfig(
                 authorize
                     .requestMatchers(
                         "/router/bus-schedule",
-                        "/router/random-coffee/add-user",
-                        "/router/random-coffee/generate-pairs",
                         "/router/registration/verify/email",
                         "/router/registration/verify/token"
                     ).permitAll()
+                    .requestMatchers(
+                        "/router/random-coffee/join",
+                    ).authenticated()
                     .anyRequest().hasAuthority(UserRole.ADMIN.name)
             }
             .httpBasic(Customizer.withDefaults())

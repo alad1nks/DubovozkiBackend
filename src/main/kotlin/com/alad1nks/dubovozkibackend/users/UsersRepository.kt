@@ -7,8 +7,6 @@ import org.springframework.data.repository.CrudRepository
 interface UsersRepository : CrudRepository<UserEntity, Long> {
     fun existsByEmail(email: String): Boolean
 
-    fun existsByTelegramId(telegramId: String): Boolean
-
     @Query("SELECT id FROM USERS WHERE email = :email")
     fun selectIdByEmail(email: String): Long
 }

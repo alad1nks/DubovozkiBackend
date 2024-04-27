@@ -41,12 +41,7 @@ class TokenVerificationUseCase(
                 }
 
                 else -> {
-                    usersRepository.save(
-                        UserEntity(
-                            email = email,
-                            telegramId = telegramId
-                        )
-                    )
+                    usersRepository.save(UserEntity(email))
                     tokensRepository.deleteByEmail(email)
                     val jwt = jwtUtil.generateToken(email, UserRole.USER.name)
                     return RegistrationResponse.Success.response(jwt)
