@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS bus_schedule (
-    id                  INT             NOT NULL    PRIMARY KEY,
+    id                  IDENTITY        NOT NULL    PRIMARY KEY,
     day_of_week         INT             NOT NULL,
     day_time            BIGINT          NOT NULL,
     day_time_string     VARCHAR(5)      NOT NULL,
